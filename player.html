@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>在线演示 - Scratch Player</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <!-- 顶部导航栏 -->
+    <header class="header">
+        <div class="header-container">
+            <div class="logo">
+                <span class="logo-icon">S</span>
+                <span class="logo-text">我的作品集</span>
+                <span class="beta-badge">BETA</span>
+            </div>
+            <nav class="nav">
+                <a href="index.html" class="nav-item">返回首页</a>
+            </nav>
+            <div class="header-actions">
+                <div class="user-avatar"></div>
+            </div>
+        </div>
+    </header>
+
+    <!-- 播放器主内容 -->
+    <main class="player-content">
+        <div class="player-container">
+            <!-- 项目信息 -->
+            <div class="player-info">
+                <h1 id="project-title">加载项目...</h1>
+                <div class="player-actions">
+                    <button class="btn btn-primary" onclick="goBack()">
+                        ← 返回作品列表
+                    </button>
+                    <button class="btn btn-secondary" id="fullscreen-btn" onclick="toggleFullscreen()">
+                        ⛶ 全屏
+                    </button>
+                </div>
+            </div>
+
+            <!-- TurboWarp 嵌入播放器 -->
+            <div class="player-wrapper" id="player-wrapper">
+                <div class="loading-player">
+                    <div class="spinner"></div>
+                    <p>正在加载 Scratch 项目...</p>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- 脚本引入 -->
+    <script src="config.js"></script>
+    <script src="player.js"></script>
+</body>
+</html>

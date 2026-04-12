@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>我的作品集 - Scratch Projects</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <!-- 顶部导航栏 -->
+    <header class="header">
+        <div class="header-container">
+            <div class="logo">
+                <span class="logo-icon">S</span>
+                <span class="logo-text">我的作品集</span>
+                <span class="beta-badge">BETA</span>
+            </div>
+            <nav class="nav">
+                <a href="#" class="nav-item">首页</a>
+                <a href="#" class="nav-item">课程</a>
+                <a href="#" class="nav-item active">作品</a>
+            </nav>
+            <div class="header-actions">
+                <button class="btn-create">免费创作</button>
+                <div class="user-avatar"></div>
+            </div>
+        </div>
+    </header>
+
+    <!-- 主内容区域 -->
+    <main class="main-content">
+        <div class="content-container">
+            <!-- 页面标题和操作栏 -->
+            <div class="page-header">
+                <h1 class="page-title">作品</h1>
+                <div class="actions-bar">
+                    <select class="filter-select">
+                        <option value="all">全部作品</option>
+                    </select>
+                    <button class="btn-upload" onclick="showUploadModal()">
+                        本地上传 (.sb2/.sb3)
+                    </button>
+                </div>
+            </div>
+
+            <!-- 作品列表 -->
+            <div id="projects-grid" class="projects-grid">
+                <!-- 作品卡片将通过JavaScript动态生成 -->
+            </div>
+
+            <!-- 加载提示 -->
+            <div id="loading" class="loading" style="display: none;">
+                <div class="spinner"></div>
+                <p>加载中...</p>
+            </div>
+        </div>
+    </main>
+
+    <!-- Token设置模态框 -->
+    <div id="token-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>设置 GitHub Token</h2>
+                <button class="modal-close" onclick="closeTokenModal()">&times;</button>
+            </div>
+            <div class="modal-body">
+                <p>请输入您的 GitHub Personal Access Token 以访问和上传作品：</p>
+                <input type="password" id="token-input" class="token-input" placeholder="输入 GitHub Token">
+                <p class="token-help">
+                    如何获取？访问 
+                    <a href="https://github.com/settings/tokens" target="_blank">GitHub Token 设置</a>，
+                    生成一个具有 <code>repo</code> 权限的 Token
+                </p>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" onclick="closeTokenModal()">取消</button>
+                <button class="btn btn-primary" onclick="saveToken()">保存</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 上传文件模态框 -->
+    <div id="upload-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>上传 Scratch 作品</h2>
+                <button class="modal-close" onclick="closeUploadModal()">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="upload-area" id="upload-area">
+                    <div class="upload-icon">📁</div>
+                    <p>拖拽文件到此处或点击选择</p>
+                    <input type="file" id="file-input" accept=".sb2,.sb3" style="display: none;">
+                </div>
+                <div id="upload-info" class="upload-info" style="display: none;">
+                    <p>已选择文件：<strong id="selected-file-name"></strong></p>
+                    <div class="progress-bar">
+                        <div id="upload-progress" class="progress-fill"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" onclick="closeUploadModal()">取消</button>
+                <button class="btn btn-primary" id="upload-btn" onclick="uploadFile()" disabled>上传</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 脚本引入 -->
+    <script src="config.js"></script>
+    <script src="app.js"></script>
+</body>
+</html>
