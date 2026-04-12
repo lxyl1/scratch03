@@ -22,28 +22,43 @@ function loadProject() {
     }
 
     // 更新页面标题
-    const displayName = projectName.replace(/\.(sb2|sb3)$/i, '');
+    const displayName = projectName.replace(/\.(sb2|sb3|html)$/i, '');
     document.getElementById('project-title').textContent = displayName;
 
-    // 使用 GitHub raw URL（更可靠）
-    const projectUrl = `https://raw.githubusercontent.com/${CONFIG.GITHUB_USER}/${CONFIG.GITHUB_REPO}/${CONFIG.GITHUB_BRANCH}/${CONFIG.PROJECTS_DIR}${projectName}`;
-    
-    // 启用摄像头和AI扩展
-    const turboWarpUrl = `https://turbowarp.org/embed?project_url=${encodeURIComponent(projectUrl)}&autoplay&clone_limit=1000&fps=30&interpolate=0&hqpen&turbo=0&cloud_host=wss%3A%2F%2Fclouddata.turbowarp.org&extensions=videoSensing`;
-
-    // 创建 iframe
     const wrapper = document.getElementById('player-wrapper');
     wrapper.innerHTML = '';
 
+    // 如果是 HTML 文件（已打包），直接加载
+    if (projectName.endsWith('.html')) {
+        const htmlUrl = `https://raw.githubusercontent.com/${CONFIG.GITHUB_USER}/${CONFIG.GITHUB_REPO}/${CONFIG.GITHUB_BRANCH}/${CONFIG.PROJECTS_DIR}${projectName}`;
+        
+        const iframe = document.createElement('iframe');
+        iframe.src = htmlUrl;
+        iframe.allow = 'autoplay; fullscreen; camera; microphone; clipboard-write';
+        iframe.allowFullscreen = true;
+        iframe.className = 'player-iframe';
+        
+        iframe.onload = function() {
+            console.log('打包项目加载完成');
+        };
+        
+        wrapper.appendChild(iframe);
+        return;
+    }
+
+    // 普通 .sb3 文件使用 TurboWarp 嵌入
+    const projectUrl = `https://raw.githubusercontent.com/${CONFIG.GITHUB_USER}/${CONFIG.GITHUB_REPO}/${CONFIG.GITHUB_BRANCH}/${CONFIG.PROJECTS_DIR}${projectName}`;
+    const turboWarpUrl = `https://turbowarp.org/embed?project_url=${encodeURIComponent(projectUrl)}&autoplay&extensions=videoSensing&sandbox=1`;
+
     const iframe = document.createElement('iframe');
     iframe.src = turboWarpUrl;
-    iframe.allow = 'autoplay; fullscreen';
+    iframe.allow = 'autoplay; fullscreen; camera; microphone; clipboard-write';
     iframe.allowFullscreen = true;
+    iframe.sandbox = 'allow-scripts allow-same-origin allow-popups allow-forms';
     iframe.className = 'player-iframe';
 
-    // 加载完成事件
     iframe.onload = function() {
-        console.log('项目加载完成');
+        console.log('TurboWarp 项目加载完成');
     };
 
     wrapper.appendChild(iframe);
