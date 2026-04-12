@@ -25,8 +25,13 @@ function loadProject() {
     const displayName = projectName.replace(/\.(sb2|sb3)$/i, '');
     document.getElementById('project-title').textContent = displayName;
 
-    // 构建 TurboWarp 嵌入 URL（使用 jsDelivr CDN）
-    const projectUrl = `https://cdn.jsdelivr.net/gh/${CONFIG.GITHUB_USER}/${CONFIG.GITHUB_REPO}@${CONFIG.GITHUB_BRANCH}/${CONFIG.PROJECTS_DIR}${projectName}`;
+    // 使用 GitHub raw URL（更可靠）
+    const projectUrl = `https://raw.githubusercontent.com/${CONFIG.GITHUB_USER}/${CONFIG.GITHUB_REPO}/${CONFIG.GITHUB_BRANCH}/${CONFIG.PROJECTS_DIR}${projectName}`;
+    
+    // 备用 URL（jsDelivr CDN）
+    const backupUrl = `https://cdn.jsdelivr.net/gh/${CONFIG.GITHUB_USER}/${CONFIG.GITHUB_REPO}@${CONFIG.GITHUB_BRANCH}/${CONFIG.PROJECTS_DIR}${projectName}`;
+    
+    // 先尝试 raw URL，如果失败再使用 CDN
     const turboWarpUrl = `https://turbowarp.org/embed?project_url=${encodeURIComponent(projectUrl)}&autoplay`;
 
     // 创建 iframe
@@ -42,11 +47,6 @@ function loadProject() {
     // 加载完成事件
     iframe.onload = function() {
         console.log('项目加载完成');
-    };
-
-    // 加载错误处理
-    iframe.onerror = function() {
-        showError('项目加载失败');
     };
 
     wrapper.appendChild(iframe);

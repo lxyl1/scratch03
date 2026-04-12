@@ -328,12 +328,18 @@ function fileToBase64(file) {
     return new Promise((resolve, reject) => {
         const reader = new FileReader();
         reader.onload = () => {
-            // 移除data:application/zip;base64,前缀
-            const base64 = reader.result.split(',')[1];
+            // 将 ArrayBuffer 转换为 Base64
+            const buffer = reader.result;
+            const bytes = new Uint8Array(buffer);
+            let binary = '';
+            for (let i = 0; i < bytes.byteLength; i++) {
+                binary += String.fromCharCode(bytes[i]);
+            }
+            const base64 = btoa(binary);
             resolve(base64);
         };
         reader.onerror = reject;
-        reader.readAsDataURL(file);
+        reader.readAsArrayBuffer(file);
     });
 }
 
