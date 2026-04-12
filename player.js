@@ -28,11 +28,8 @@ function loadProject() {
     // 使用 GitHub raw URL（更可靠）
     const projectUrl = `https://raw.githubusercontent.com/${CONFIG.GITHUB_USER}/${CONFIG.GITHUB_REPO}/${CONFIG.GITHUB_BRANCH}/${CONFIG.PROJECTS_DIR}${projectName}`;
     
-    // 备用 URL（jsDelivr CDN）
-    const backupUrl = `https://cdn.jsdelivr.net/gh/${CONFIG.GITHUB_USER}/${CONFIG.GITHUB_REPO}@${CONFIG.GITHUB_BRANCH}/${CONFIG.PROJECTS_DIR}${projectName}`;
-    
-    // 先尝试 raw URL，如果失败再使用 CDN
-    const turboWarpUrl = `https://turbowarp.org/embed?project_url=${encodeURIComponent(projectUrl)}&autoplay`;
+    // 启用摄像头和AI扩展
+    const turboWarpUrl = `https://turbowarp.org/embed?project_url=${encodeURIComponent(projectUrl)}&autoplay&clone_limit=1000&fps=30&interpolate=0&hqpen&turbo=0&cloud_host=wss%3A%2F%2Fclouddata.turbowarp.org&extensions=videoSensing`;
 
     // 创建 iframe
     const wrapper = document.getElementById('player-wrapper');
