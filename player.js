@@ -46,16 +46,9 @@ function loadProject() {
         return;
     }
 
-    // .sb3 文件：优先查找对应的 .html 版本
-    if (projectName.endsWith('.sb3') || projectName.endsWith('.sb2')) {
-        const htmlName = projectName.replace(/\.(sb3|sb2)$/i, '.html');
-        window.location.href = `player.html?project=${encodeURIComponent(htmlName)}`;
-        return;
-    }
-
     // 普通 .sb3 文件使用 TurboWarp 嵌入
     const projectUrl = `https://raw.githubusercontent.com/${CONFIG.GITHUB_USER}/${CONFIG.GITHUB_REPO}/${CONFIG.GITHUB_BRANCH}/${CONFIG.PROJECTS_DIR}${projectName}`;
-    const turboWarpUrl = `https://turbowarp.org/embed?project_url=${encodeURIComponent(projectUrl)}&autoplay&extensions=videoSensing`;
+    const turboWarpUrl = `https://turbowarp.org/embed?project_url=${encodeURIComponent(projectUrl)}&autoplay&extensions=videoSensing&sandbox=1`;
 
     const iframe = document.createElement('iframe');
     iframe.src = turboWarpUrl;
