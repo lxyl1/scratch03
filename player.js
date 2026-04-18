@@ -46,9 +46,15 @@ function loadProject() {
         return;
     }
 
+    // 检测是否为 .sb3 文件并跳转到 helloai
+    if (projectName.endsWith('.sb3') || projectName.endsWith('.sb2')) {
+        showHelloAiRedirect(projectName);
+        return;
+    }
+
     // 普通 .sb3 文件使用 TurboWarp 嵌入
     const projectUrl = `https://raw.githubusercontent.com/${CONFIG.GITHUB_USER}/${CONFIG.GITHUB_REPO}/${CONFIG.GITHUB_BRANCH}/${CONFIG.PROJECTS_DIR}${projectName}`;
-    const turboWarpUrl = `https://turbowarp.org/embed?project_url=${encodeURIComponent(projectUrl)}&autoplay&extensions=videoSensing&sandbox=1`;
+    const turboWarpUrl = `https://turbowarp.org/embed?project_url=${encodeURIComponent(projectUrl)}&autoplay&extensions=videoSensing`;
 
     const iframe = document.createElement('iframe');
     iframe.src = turboWarpUrl;
@@ -62,6 +68,32 @@ function loadProject() {
     };
 
     wrapper.appendChild(iframe);
+}
+
+// 显示跳转到 helloai 的提示
+function showHelloAiRedirect(projectName) {
+    const wrapper = document.getElementById('player-wrapper');
+    wrapper.innerHTML = `
+        <div class="helloai-redirect" style="text-align: center; padding: 60px 20px;">
+            <div style="font-size: 64px; margin-bottom: 24px;">🤖</div>
+            <h2 style="color: #1a202c; margin-bottom: 16px;">此项目需要 helloai 平台支持</h2>
+            <p style="color: #718096; margin-bottom: 24px; line-height: 1.8;">
+                该项目使用了 helloai.online 的"人工智能 - 肢体识别"扩展<br>
+                仅在 helloai 平台上可以运行
+            </p>
+            <div style="display: flex; gap: 12px; justify-content: center; flex-wrap: wrap;">
+                <a href="https://helloai.online/editor" target="_blank" class="btn btn-primary" style="text-decoration: none; display: inline-block;">
+                    在 helloai 中打开
+                </a>
+                <button class="btn btn-secondary" onclick="goBack()">
+                    ← 返回作品列表
+                </button>
+            </div>
+            <p style="color: #a0aec0; margin-top: 24px; font-size: 13px;">
+                提示：你可以在 helloai.online 上传此 .sb3 文件来运行
+            </p>
+        </div>
+    `;
 }
 
 // 显示错误信息
