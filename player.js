@@ -82,15 +82,16 @@ function showHelloAiRedirect(projectName) {
                 仅在 helloai 平台上可以运行
             </p>
             <div style="display: flex; gap: 12px; justify-content: center; flex-wrap: wrap;">
-                <a href="https://helloai.online/editor" target="_blank" class="btn btn-primary" style="text-decoration: none; display: inline-block;">
-                    在 helloai 中打开
+                <a href="https://www.helloai.online" target="_blank" class="btn btn-primary" style="text-decoration: none; display: inline-block;">
+                    打开 helloai 平台
                 </a>
                 <button class="btn btn-secondary" onclick="goBack()">
                     ← 返回作品列表
                 </button>
             </div>
             <p style="color: #a0aec0; margin-top: 24px; font-size: 13px;">
-                提示：你可以在 helloai.online 上传此 .sb3 文件来运行
+                提示：请在 helloai.online 中上传此 .sb3 文件来运行<br>
+                项目文件可在作品列表中下载
             </p>
         </div>
     `;
