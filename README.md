@@ -1,12 +1,13 @@
 # Scratch 作品集
 
-一个纯前端实现的 Scratch 作品展示网页，支持从 GitHub 读取项目、本地上传 .sb3 文件并实时推送至 GitHub，以及使用 TurboWarp 在线演示作品。
+一个纯前端实现的 Scratch 作品展示网页，支持从 GitHub 读取项目、本地上传 .sb3 文件并实时推送至 GitHub，智能选择 TurboWarp 或 helloai.online 播放器在线演示作品。
 
 ## ✨ 功能特性
 
 - 📂 **作品展示** - 从 GitHub 仓库加载并展示所有 Scratch 项目
 - ⬆️ **本地上传** - 支持上传 .sb2 和 .sb3 文件，自动推送到 GitHub
-- ▶️ **在线演示** - 使用 TurboWarp 嵌入播放器在线运行 Scratch 作品
+- 🤖 **AI插件支持** - 自动检测并使用 helloai.online 播放器运行 AI 肢体识别等特殊插件项目
+- ▶️ **在线演示** - 智能切换 TurboWarp / helloai.online 播放器，所有功能在私人网页内完成
 - ⬇️ **下载功能** - 可以直接下载 GitHub 上的项目文件
 - 🗑️ **删除管理** - 可以删除不需要的项目
 - 📱 **响应式设计** - 支持桌面和移动设备访问
