@@ -114,31 +114,104 @@ async function shouldUseHelloAIPlayer(projectName) {
 function loadWithHelloAI(projectName, wrapper) {
     const projectUrl = `https://raw.githubusercontent.com/${CONFIG.GITHUB_USER}/${CONFIG.GITHUB_REPO}/${CONFIG.GITHUB_BRANCH}/${CONFIG.PROJECTS_DIR}${projectName}`;
     
-    // helloai.online 的嵌入播放器格式（类似 CodeLab Scratch）
-    const helloAIUrl = `https://helloai.online/player.html?sb3url=${encodeURIComponent(projectUrl)}`;
-    
-    const iframe = document.createElement('iframe');
-    iframe.src = helloAIUrl;
-    iframe.allow = 'autoplay; fullscreen; camera; microphone; clipboard-write';
-    iframe.allowFullscreen = true;
-    iframe.className = 'player-iframe';
-    
-    iframe.onload = function() {
-        console.log('helloai.online 项目加载完成');
-        document.querySelector('.loading-player')?.remove();
-    };
-    
-    iframe.onerror = function() {
-        console.error('helloai.online 加载失败');
-    };
-    
-    // 添加播放器信息提示
+    // 添加说明：helloai.online 不支持嵌入外部项目
     const info = document.createElement('div');
     info.className = 'player-info-notice';
-    info.innerHTML = '<p style="color: #667eea; text-align: center; padding: 8px; background: #f0f4ff; border-radius: 8px; margin-bottom: 8px;">🤖 此作品使用 AI 插件，正在使用 helloai.online 播放器加载...</p>';
+    info.innerHTML = `
+        <div style="padding: 16px; background: #f0f4ff; border-radius: 12px; margin-bottom: 16px; text-align: center;">
+            <p style="color: #667eea; font-size: 16px; font-weight: 600; margin-bottom: 12px;">
+                🤖 此作品使用 AI 肢体识别插件
+            </p>
+            <p style="color: #4a5568; font-size: 14px; margin-bottom: 16px; line-height: 1.6;">
+                AI 插件仅在 helloai.online 平台可用，无法直接嵌入播放<br>
+                请选择以下方案之一：
+            </p>
+            <div style="display: flex; gap: 12px; justify-content: center; flex-wrap: wrap;">
+                <button class="btn btn-primary" onclick="openInHelloAI('${projectUrl}')">
+                    🌐 在 helloai.online 中打开
+                </button>
+                <button class="btn btn-secondary" onclick="showConversionGuide()">
+                    📦 转换为HTML版本
+                </button>
+                <button class="btn btn-secondary" onclick="tryFallbackPlayer('${projectName}')">
+                    🔄 尝试备用播放器
+                </button>
+            </div>
+        </div>
+    `;
     wrapper.appendChild(info);
     
-    wrapper.appendChild(iframe);
+    // 显示下载按钮，让用户下载后在本地或 helloai.online 打开
+    const downloadBtn = document.createElement('div');
+    downloadBtn.innerHTML = `
+        <div style="text-align: center; padding: 12px; background: #fff3cd; border-radius: 8px; margin-top: 12px;">
+            <p style="color: #856404; font-size: 13px; margin-bottom: 8px;">
+                💡 提示：下载作品后，可以在 helloai.online 中加载此文件
+            </p>
+            <button class="btn btn-secondary" onclick="downloadProject('${projectName}')">
+                ⬇️ 下载作品文件
+            </button>
+        </div>
+    `;
+    wrapper.appendChild(downloadBtn);
+}
+
+// 在 helloai.online 中打开项目
+function openInHelloAI(projectUrl) {
+    // 打开 helloai.online 官网，用户需要手动加载项目
+    window.open('https://helloai.online/', '_blank');
+    
+    // 显示提示
+    alert('✅ 已打开 helloai.online\n\n请在该网站中：\n1. 点击"从计算机加载"或拖拽 .sb3 文件\n2. 或者下载作品后在该网站加载');
+}
+
+// 显示转换指南
+function showConversionGuide() {
+    const wrapper = document.getElementById('player-wrapper');
+    wrapper.innerHTML = `
+        <div style="padding: 24px; max-width: 700px; margin: 0 auto;">
+            <h2 style="color: #667eea; margin-bottom: 20px;">📦 将 .sb3 转换为 HTML 版本</h2>
+            
+            <div style="background: #f8f9fa; padding: 20px; border-radius: 12px; margin-bottom: 20px;">
+                <h3 style="color: #333; margin-bottom: 12px;">方案一：使用在线转换工具（推荐）</h3>
+                <ol style="color: #555; line-height: 2; padding-left: 20px;">
+                    <li>访问 <a href="https://sheeptester.github.io/words-go-here/scratch3-htmlifier/" target="_blank" style="color: #667eea;">Scratch HTMLifier 在线工具</a></li>
+                    <li>上传你的 .sb3 文件</li>
+                    <li>选择 "HTMLify without minification (recommended)"</li>
+                    <li>下载生成的 .html 文件</li>
+                    <li>将 HTML 文件上传到你的 GitHub 仓库</li>
+                    <li>在作品列表中点击该 HTML 文件即可在线播放</li>
+                </ol>
+            </div>
+            
+            <div style="background: #f8f9fa; padding: 20px; border-radius: 12px; margin-bottom: 20px;">
+                <h3 style="color: #333; margin-bottom: 12px;">方案二：使用 helloai.online</h3>
+                <ol style="color: #555; line-height: 2; padding-left: 20px;">
+                    <li>下载作品文件（.sb3）</li>
+                    <li>访问 <a href="https://helloai.online/" target="_blank" style="color: #667eea;">helloai.online</a></li>
+                    <li>在 helloai.online 中加载 .sb3 文件</li>
+                    <li>如果需要网页嵌入，联系 helloai.online 获取嵌入代码</li>
+                </ol>
+            </div>
+            
+            <div style="text-align: center; margin-top: 24px;">
+                <button class="btn btn-primary" onclick="downloadCurrentProject()">
+                    ⬇️ 下载当前作品
+                </button>
+                <button class="btn btn-secondary" onclick="goBack()" style="margin-left: 12px;">
+                    ← 返回作品列表
+                </button>
+            </div>
+        </div>
+    `;
+}
+
+// 下载当前作品
+function downloadCurrentProject() {
+    const projectName = getUrlParameter('project');
+    if (projectName) {
+        downloadProject(projectName);
+    }
 }
 
 // 使用 TurboWarp 播放器加载项目
